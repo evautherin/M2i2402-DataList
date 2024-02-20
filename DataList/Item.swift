@@ -15,4 +15,6 @@ final class Item {
     init(timestamp: Date) {
         self.timestamp = timestamp
     }
+    
+    static let test = Item(timestamp: Date())
 }

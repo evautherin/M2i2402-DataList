@@ -13,11 +13,20 @@ struct ContentView: View {
     @Query private var items: [Item]
 
     var body: some View {
-        NavigationSplitView {
+        let invertedItems = items.sorted {
+            let comparison = $0.timestamp.compare($1.timestamp)
+            switch comparison {
+            case .orderedAscending:
+                return false
+            case .orderedSame, .orderedDescending:
+                return true
+            }
+        }
+        NavigationView {
             List {
-                ForEach(items) { item in
+                ForEach(invertedItems) { item in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        ItemView(item: item)
                     } label: {
                         Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
                     }
@@ -34,9 +43,10 @@ struct ContentView: View {
                     }
                 }
             }
-        } detail: {
+            .navigationTitle("Items")
+        } /* detail: {
             Text("Select an item")
-        }
+        } */
     }
 
     private func addItem() {
