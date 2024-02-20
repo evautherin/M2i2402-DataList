@@ -10,21 +10,22 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query(sort: \Item.timestamp, order: .reverse)
+    private var items: [Item]
 
     var body: some View {
-        let invertedItems = items.sorted {
-            let comparison = $0.timestamp.compare($1.timestamp)
-            switch comparison {
-            case .orderedAscending:
-                return false
-            case .orderedSame, .orderedDescending:
-                return true
-            }
-        }
+//        let invertedItems = items.sorted {
+//            let comparison = $0.timestamp.compare($1.timestamp)
+//            switch comparison {
+//            case .orderedAscending:
+//                return false
+//            case .orderedSame, .orderedDescending:
+//                return true
+//            }
+//        }
         NavigationView {
             List {
-                ForEach(invertedItems) { item in
+                ForEach(items) { item in
                     NavigationLink {
                         ItemView(item: item)
                     } label: {
